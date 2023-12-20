@@ -1,5 +1,24 @@
 import browser from "webextension-polyfill";
 import { storage } from "./utils/storage";
+import ExtPay from "extpay";
+
+const extpay = ExtPay("reddit-assistance");
+extpay.startBackground();
+
+extpay.getUser().then((user) => {
+  console.log("user: ", user);
+  if (user.paid) {
+    console.log("user is paied");
+  } else {
+    console.log("unpaid");
+  }
+});
+
+browser.runtime.onMessage.addListener((message) => {
+  if (message.payment) {
+    extpay.openPaymentPage();
+  }
+});
 
 browser.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === "install") {
