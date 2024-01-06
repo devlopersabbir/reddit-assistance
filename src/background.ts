@@ -27,26 +27,40 @@ browser.runtime.onInstalled.addListener(async (details) => {
   }
 });
 
-browser.runtime.onMessage.addListener(async (message) => {
+browser.runtime.onMessage.addListener(async (message: TMessaging) => {
   if (
-    message.action === "deletePost" ||
-    message.action === "deleteComment" ||
-    message.action === "deleteMessage"
+    message.action === "deletePosts" ||
+    message.action === "deleteComments" ||
+    message.action === "deleteMessages"
   ) {
     const tab = await browser.tabs.create({ url: message.url, active: true });
 
     browser.tabs.onUpdated.addListener(function listener(tabId, info) {
       if (tabId === tab.id && info.status === "complete") {
         browser.tabs.onUpdated.removeListener(listener);
-        browser.tabs.sendMessage(tab.id, {
-          from:
-            message.action === "deletePost"
-              ? "post"
-              : message.action === "deleteComment"
-              ? "comments"
-              : "messages",
-          ammount: message.ammount,
-        });
+
+        switch (message.action) {
+          case "deletePosts":
+            browser.tabs.sendMessage(tab.id, {
+              from: "POSTS",
+              ammount: message.ammount,
+            } satisfies TFeatures);
+            break;
+          case "deleteComments":
+            browser.tabs.sendMessage(tab.id, {
+              from: "COMMENTS",
+              ammount: message.ammount,
+            } satisfies TFeatures);
+            break;
+          case "deleteMessages":
+            browser.tabs.sendMessage(tab.id, {
+              from: "MESSAGES",
+              ammount: message.ammount,
+            } satisfies TFeatures);
+            break;
+          default:
+            break;
+        }
       }
     });
   }
