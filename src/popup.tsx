@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.body).render(
   <React.StrictMode>
-    <Toaster duration={800} />
+    <Toaster duration={500} />
     <Popup />
   </React.StrictMode>
 );
