@@ -18,7 +18,7 @@ export default function () {
   const [name, setName] = useState<string>("");
 
   async function deletePostHandler() {
-    if (post >= 1 && paid && username) {
+    if (post >= 1 && post <= 50 && paid && username) {
       const url = `https://old.reddit.com/user/${username}/submitted`;
       Browser.runtime.sendMessage({
         action: "deletePost",
@@ -29,7 +29,7 @@ export default function () {
   }
 
   async function deleteCommentHandler() {
-    if (comments >= 1 && paid && username) {
+    if (comments >= 1 && comments <= 50 && paid && username) {
       const url = `https://old.reddit.com/user/${username}/comments/`;
       Browser.runtime.sendMessage({
         action: "deleteComment",
@@ -39,7 +39,9 @@ export default function () {
     }
   }
 
-  function paymentHandler() {}
+  function paymentHandler() {
+    Browser.runtime.sendMessage({ payment: true });
+  }
 
   useEffect(() => {
     const { version, name } = Browser.runtime.getManifest();
@@ -132,6 +134,8 @@ export default function () {
                   type="number"
                   name="post"
                   id="post"
+                  min={1}
+                  max={50}
                   placeholder="00"
                   value={post}
                   onChange={(e) => setPost(+e.target.value)}
@@ -156,6 +160,8 @@ export default function () {
                   type="number"
                   name="comments"
                   id="comments"
+                  min={1}
+                  max={50}
                   placeholder="00"
                   value={comments}
                   onChange={(e) => setComments(+e.target.value)}
@@ -173,7 +179,7 @@ export default function () {
       )}
 
       <div className="flex flex-col justify-center items-center gap-0 mt-4">
-        <p className="text-[12px] text-opacity-20">Develop By Jonathon</p>
+        {/* <p className="text-[12px] text-opacity-20">Develop By Jonathon</p> */}
         <strong className="text-sm font-semibold">v{version}</strong>
       </div>
       {isUsername && (
@@ -181,7 +187,7 @@ export default function () {
           src="/logout.png"
           alt="logout btn"
           className="fixed -bottom-1 -right-1 w-10 border-none bg-red-600 rounded-full cursor-pointer h-10"
-          onClick={logoutHandler}
+          onClick={paymentHandler}
         />
       )}
     </div>
