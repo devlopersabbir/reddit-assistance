@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.floating__button {
+  background-color: red;
+  font-size: 20px;
+  font-weight: bolder;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  box-shadow: 2px 2px 2px 2px red;
+}
