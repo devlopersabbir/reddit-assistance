@@ -27,10 +27,5 @@ function main(btn: HTMLButtonElement) {
   }
 }
 
-const path = pathName(window.location.href);
-const pname = TEXTS.forEach(
-  (element) => element.path === path && element.short
-);
-
-document.querySelector("body")?.appendChild(floatingButton());
+document.querySelector("body")?.appendChild(floatingButton("DP"));
 main(document.querySelector(".floating__button") as HTMLButtonElement);

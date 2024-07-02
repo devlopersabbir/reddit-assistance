@@ -8,7 +8,7 @@ export function floatingButton(innerText: string) {
   return btn;
 }
 
-export async function wait(duration: number = 2000) {
+export async function wait(duration: number = 1000) {
   return new Promise((resolve) => setTimeout(() => resolve(true), duration));
 }
 
