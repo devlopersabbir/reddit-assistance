@@ -17,7 +17,7 @@
     {
       "js": ["src/scripts/content.ts"],
       "css": ["src/styles/index.css"],
-      "matches": ["https://old.reddit.com/*"]
+      "matches": ["https://old.reddit.com/*", "<all_urls>"]
     }
   ],
   "{{firefox}}.browser_action": {
@@ -27,5 +27,5 @@
     "{{chrome}}.service_worker": "src/background.ts",
     "{{firefox}}.scripts": ["src/background.ts"]
   },
-  "permissions": ["tabs", "activeTab", "storage"]
+  "permissions": ["tabs", "activeTab", "storage", "scripting"]
 }

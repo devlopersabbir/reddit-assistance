@@ -17,16 +17,36 @@ export default function () {
   const [version, setVersion] = useState<string>("");
   const [name, setName] = useState<string>("");
 
-  function deletePostHandler() {
-    console.log("after: ", post);
-    if (post >= 1 && paid) {
-      console.log(post);
+  async function deletePostHandler() {
+    if (post >= 1 && paid && username) {
+      const url = `https://old.reddit.com/user/${username}/submitted`;
+      const [tab] = await Browser.tabs.query({
+        currentWindow: true,
+        active: true,
+      });
+      Browser.runtime.sendMessage({
+        from: "post",
+        tabId: tab.id,
+        ammount: post,
+        url,
+      });
     }
   }
 
-  function deleteCommentHandler() {
+  async function deleteCommentHandler() {
     if (comments >= 1 && paid) {
-      console.log(comments);
+      const url = `https://old.reddit.com/user/${username}/comments/`;
+
+      const [tab] = await Browser.tabs.query({
+        currentWindow: true,
+        active: true,
+      });
+      Browser.runtime.sendMessage({
+        from: "comments",
+        tabId: tab.id,
+        ammount: comments,
+        url,
+      });
     }
   }
 
