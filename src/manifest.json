@@ -8,9 +8,7 @@
     "96": "icon/96.png",
     "128": "icon/128.png"
   },
-  "{{chrome}}.action": {
-    "default_popup": "src/popup.html"
-  },
+
   "content_scripts": [
     {
       "js": ["src/scripts/content.ts"],
@@ -18,9 +16,7 @@
       "matches": ["https://old.reddit.com/*"]
     }
   ],
-  "{{firefox}}.browser_action": {
-    "default_popup": "src/popup.html"
-  },
+
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
     "{{firefox}}.scripts": ["src/background.ts"]

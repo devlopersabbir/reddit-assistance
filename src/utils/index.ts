@@ -1,6 +1,6 @@
-export function floatingButton() {
+export function floatingButton(innerText: string) {
   const btn = document.createElement("button");
-  btn.innerText = "DC";
+  btn.innerText = innerText;
   btn.style.position = "fixed";
   btn.style.left = "20px";
   btn.style.bottom = "20px";
@@ -20,3 +20,14 @@ export function dispatchEvent(el: Element) {
   });
   el.dispatchEvent(clickEvent);
 }
+
+export function pathName(url: string) {
+  const match = url.match(/\/user\/[^/]+\/([^/]+)/);
+  if (!match) return;
+  return match[1];
+}
+
+export const TEXTS = [
+  { path: "submitted", short: "DP" },
+  { path: "comments", short: "DC" },
+];

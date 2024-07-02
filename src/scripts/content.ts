@@ -1,4 +1,4 @@
-import { dispatchEvent, floatingButton, wait } from "../utils";
+import { TEXTS, dispatchEvent, floatingButton, pathName, wait } from "../utils";
 
 console.clear();
 
@@ -26,6 +26,11 @@ function main(btn: HTMLButtonElement) {
     });
   }
 }
+
+const path = pathName(window.location.href);
+const pname = TEXTS.forEach(
+  (element) => element.path === path && element.short
+);
 
 document.querySelector("body")?.appendChild(floatingButton());
 main(document.querySelector(".floating__button") as HTMLButtonElement);
