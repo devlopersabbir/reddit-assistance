@@ -1,13 +1,15 @@
 import Browser from "webextension-polyfill";
 import { dispatchEvent, wait } from "../utils";
+
 console.clear();
 
 /**
- * Delete posts
+ * Delete posts & comments
  */
-async function deletePost(ammount: number) {
+async function deletePostAndComments(ammount: number, name: string) {
+  const sure = confirm(`Agree to ${name} ${ammount} post?`);
+  if (!sure) return;
   let counter: number = 0;
-  // getting all delete buttons
   const deleteBtns = document.querySelectorAll("[data-event-action=delete]");
 
   for (const dbtn of deleteBtns) {
@@ -20,28 +22,16 @@ async function deletePost(ammount: number) {
     if (confirm) {
       await wait();
       dispatchEvent(confirm);
-      await wait();
+      await wait(400);
       counter++;
     }
   }
 }
 
-/**
- * Delete comments
- */
-function deleteComments(ammount: number) {
-  console.log("number");
-}
-
-Browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-  switch (request.from) {
-    case "post":
-      deletePost(request.ammount);
-      break;
-    case "comments":
-      deleteComments(request.ammount);
-      break;
-    default:
-      break;
+Browser.runtime.onMessage.addListener(async (request) => {
+  if (request.from === "post") {
+    await deletePostAndComments(request.ammount, "Posts");
+  } else if (request.from === "comments") {
+    await deletePostAndComments(request.ammount, "Comments");
   }
 });

@@ -20,13 +20,8 @@ export default function () {
   async function deletePostHandler() {
     if (post >= 1 && paid && username) {
       const url = `https://old.reddit.com/user/${username}/submitted`;
-      const [tab] = await Browser.tabs.query({
-        currentWindow: true,
-        active: true,
-      });
       Browser.runtime.sendMessage({
-        from: "post",
-        tabId: tab.id,
+        action: "deletePost",
         ammount: post,
         url,
       });
@@ -34,16 +29,10 @@ export default function () {
   }
 
   async function deleteCommentHandler() {
-    if (comments >= 1 && paid) {
+    if (comments >= 1 && paid && username) {
       const url = `https://old.reddit.com/user/${username}/comments/`;
-
-      const [tab] = await Browser.tabs.query({
-        currentWindow: true,
-        active: true,
-      });
       Browser.runtime.sendMessage({
-        from: "comments",
-        tabId: tab.id,
+        action: "deleteComment",
         ammount: comments,
         url,
       });
