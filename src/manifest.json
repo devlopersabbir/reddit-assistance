@@ -1,6 +1,6 @@
 {
-  "name": "Reddit Assistance",
-  "description": "Reddit Assistance - extension for enhancing Reddit browsing experience, with handy features and customization options.",
+  "name": "Nuke Reddit History",
+  "description": "Nuke Reddit History - Effortlessly delete all Reddit posts and comments, ensuring privacy and data security.",
   "{{chrome}}.manifest_version": 3,
   "{{firefox}}.manifest_version": 2,
   "icons": {

@@ -22,33 +22,38 @@ export default function () {
   async function deleteHanlder(from: "post" | "comments" | "message") {
     switch (from) {
       case "post":
-        if (post >= 1 && post <= 50 && paid && username) {
+        if (post >= 1 && post <= 20 && paid && username) {
           const url = `https://old.reddit.com/user/${username}/submitted`;
           Browser.runtime.sendMessage({
             action: "deletePost",
             ammount: post,
             url,
           });
+        } else {
+          toast.error("Something went wrong! 😒");
         }
       case "comments":
-        if (comments >= 1 && comments <= 50 && paid && username) {
+        if (comments >= 1 && comments <= 20 && paid && username) {
           const url = `https://old.reddit.com/user/${username}/comments/`;
           Browser.runtime.sendMessage({
             action: "deleteComment",
             ammount: comments,
             url,
           });
+        } else {
+          toast.error("Something went wrong! 😒");
         }
         break;
       case "message":
-        if (messages >= 1 && messages <= 50 && paid && username) {
-          //TODO: need to change the URL
+        if (messages >= 1 && messages <= 20 && paid && username) {
           const url = `https://old.reddit.com/message/messages`;
           Browser.runtime.sendMessage({
             action: "deleteMessage",
             ammount: messages,
             url,
           });
+        } else {
+          toast.error("Something went wrong! 😒");
         }
         break;
       default:
