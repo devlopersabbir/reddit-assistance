@@ -7,7 +7,7 @@ console.clear();
  * Delete posts & comments
  */
 async function deletePostAndComments(ammount: number, name: string) {
-  const sure = confirm(`Agree to ${name} ${ammount} post?`);
+  const sure = confirm(` Agree to delete ${ammount} ${name}?`);
   if (!sure) return;
   let counter: number = 0;
   const deleteBtns = document.querySelectorAll("[data-event-action=delete]");
