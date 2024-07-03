@@ -28,14 +28,23 @@ browser.runtime.onInstalled.addListener(async (details) => {
 });
 
 browser.runtime.onMessage.addListener(async (message) => {
-  if (message.action === "deletePost" || message.action === "deleteComment") {
+  if (
+    message.action === "deletePost" ||
+    message.action === "deleteComment" ||
+    message.action === "deleteMessage"
+  ) {
     const tab = await browser.tabs.create({ url: message.url, active: true });
 
     browser.tabs.onUpdated.addListener(function listener(tabId, info) {
       if (tabId === tab.id && info.status === "complete") {
         browser.tabs.onUpdated.removeListener(listener);
         browser.tabs.sendMessage(tab.id, {
-          from: message.action === "deletePost" ? "post" : "comments",
+          from:
+            message.action === "deletePost"
+              ? "post"
+              : message.action === "deleteComment"
+              ? "comments"
+              : "messages",
           ammount: message.ammount,
         });
       }

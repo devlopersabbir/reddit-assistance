@@ -6,12 +6,16 @@ console.clear();
 /**
  * Delete posts & comments
  */
-async function deletePostAndComments(ammount: number, name: string) {
+async function deleteEverything(ammount: number, name: string) {
   const sure = confirm(` Agree to delete ${ammount} ${name}?`);
   if (!sure) return;
   let counter: number = 0;
-  const deleteBtns = document.querySelectorAll("[data-event-action=delete]");
+  let buttons = document.querySelectorAll("[data-event-action=delete]");
+  if (buttons.length === 0)
+    buttons = document.querySelectorAll("[data-event-action=delete_message]");
+  const deleteBtns = Array.from(buttons);
 
+  console.log("button: ", deleteBtns);
   for (const dbtn of deleteBtns) {
     if (counter >= ammount) break;
     if (dbtn) {
@@ -30,8 +34,10 @@ async function deletePostAndComments(ammount: number, name: string) {
 
 Browser.runtime.onMessage.addListener(async (request) => {
   if (request.from === "post") {
-    await deletePostAndComments(request.ammount, "Posts");
+    await deleteEverything(request.ammount, "Posts");
   } else if (request.from === "comments") {
-    await deletePostAndComments(request.ammount, "Comments");
+    await deleteEverything(request.ammount, "Comments");
+  } else if (request.from === "messages") {
+    await deleteEverything(request.ammount, "Messages");
   }
 });

@@ -43,7 +43,7 @@ export default function () {
       case "message":
         if (messages >= 1 && messages <= 50 && paid && username) {
           //TODO: need to change the URL
-          const url = `https://old.reddit.com/user/${username}/comments/`;
+          const url = `https://old.reddit.com/message/messages`;
           Browser.runtime.sendMessage({
             action: "deleteMessage",
             ammount: messages,
@@ -153,7 +153,7 @@ export default function () {
                   name="post"
                   id="post"
                   min={1}
-                  max={50}
+                  max={20}
                   placeholder="00"
                   value={post}
                   onChange={(e) => setPost(+e.target.value)}
@@ -179,7 +179,7 @@ export default function () {
                   name="comments"
                   id="comments"
                   min={1}
-                  max={50}
+                  max={20}
                   placeholder="00"
                   value={comments}
                   onChange={(e) => setComments(+e.target.value)}
@@ -205,7 +205,7 @@ export default function () {
                   name="messages"
                   id="messages"
                   min={1}
-                  max={50}
+                  max={20}
                   placeholder="00"
                   value={messages}
                   onChange={(e) => setMessages(+e.target.value)}
