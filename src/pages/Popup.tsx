@@ -13,29 +13,46 @@ export default function () {
 
   const [post, setPost] = useState<number>(10);
   const [comments, setComments] = useState<number>(10);
+  const [messages, setMessages] = useState<number>(10);
+
   // extension information
   const [version, setVersion] = useState<string>("");
   const [name, setName] = useState<string>("");
 
-  async function deletePostHandler() {
-    if (post >= 1 && post <= 50 && paid && username) {
-      const url = `https://old.reddit.com/user/${username}/submitted`;
-      Browser.runtime.sendMessage({
-        action: "deletePost",
-        ammount: post,
-        url,
-      });
-    }
-  }
-
-  async function deleteCommentHandler() {
-    if (comments >= 1 && comments <= 50 && paid && username) {
-      const url = `https://old.reddit.com/user/${username}/comments/`;
-      Browser.runtime.sendMessage({
-        action: "deleteComment",
-        ammount: comments,
-        url,
-      });
+  async function deleteHanlder(from: "post" | "comments" | "message") {
+    switch (from) {
+      case "post":
+        if (post >= 1 && post <= 50 && paid && username) {
+          const url = `https://old.reddit.com/user/${username}/submitted`;
+          Browser.runtime.sendMessage({
+            action: "deletePost",
+            ammount: post,
+            url,
+          });
+        }
+      case "comments":
+        if (comments >= 1 && comments <= 50 && paid && username) {
+          const url = `https://old.reddit.com/user/${username}/comments/`;
+          Browser.runtime.sendMessage({
+            action: "deleteComment",
+            ammount: comments,
+            url,
+          });
+        }
+        break;
+      case "message":
+        if (messages >= 1 && messages <= 50 && paid && username) {
+          //TODO: need to change the URL
+          const url = `https://old.reddit.com/user/${username}/comments/`;
+          Browser.runtime.sendMessage({
+            action: "deleteMessage",
+            ammount: messages,
+            url,
+          });
+        }
+        break;
+      default:
+        break;
     }
   }
 
@@ -124,6 +141,7 @@ export default function () {
             </p>
           </div>
           <div className="flex flex-col  justify-center items-center">
+            {/* delete post */}
             <div className="flex flex-col w-full">
               <label htmlFor="post" className="text-base font-medium">
                 Delete your posts
@@ -142,7 +160,7 @@ export default function () {
                 />
                 <button
                   className="absolute right-0 top-0 z-10 bg-red-600 h-full rounded-full px-4 text-base font-semibold"
-                  onClick={deletePostHandler}
+                  onClick={() => deleteHanlder("post")}
                 >
                   Delete
                 </button>
@@ -168,7 +186,33 @@ export default function () {
                 />
                 <button
                   className="absolute right-0 top-0 z-10 bg-red-600 h-full rounded-full px-4 text-base font-semibold"
-                  onClick={deleteCommentHandler}
+                  onClick={() => deleteHanlder("comments")}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+            <div className="w-2 h-5 bg-blue-300 rounded-full mt-2" />
+            {/* delete message */}
+            <div className="flex flex-col gap-1 w-full">
+              <label htmlFor="messages" className="text-base font-medium">
+                Delete your messages
+              </label>
+              <div className="flex w-full relative">
+                <input
+                  className="w-full text-xl font-semibold rounded-full p-1 text-zinc-900 text-center shadow-inner"
+                  type="number"
+                  name="messages"
+                  id="messages"
+                  min={1}
+                  max={50}
+                  placeholder="00"
+                  value={messages}
+                  onChange={(e) => setMessages(+e.target.value)}
+                />
+                <button
+                  className="absolute right-0 top-0 z-10 bg-red-600 h-full rounded-full px-4 text-base font-semibold"
+                  onClick={() => deleteHanlder("message")}
                 >
                   Delete
                 </button>
@@ -187,7 +231,7 @@ export default function () {
           src="/logout.png"
           alt="logout btn"
           className="fixed -bottom-1 -right-1 w-10 border-none bg-red-600 rounded-full cursor-pointer h-10"
-          onClick={paymentHandler}
+          onClick={logoutHandler}
         />
       )}
     </div>
