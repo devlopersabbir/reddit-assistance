@@ -1,6 +1,11 @@
 {
   "name": "Nuke Reddit History",
   "description": "Nuke Reddit History - Effortlessly delete all Reddit posts and comments, ensuring privacy and data security.",
+  "homepage_url": "https://github.com/devlopersabbir",
+  "author": {
+    "name": "Sabbir Hossain Shuvo",
+    "url": "https://github.com/devlopersabbir"
+  },
   "{{chrome}}.manifest_version": 3,
   "{{firefox}}.manifest_version": 2,
   "icons": {

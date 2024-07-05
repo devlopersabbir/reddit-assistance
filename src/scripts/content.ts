@@ -1,13 +1,12 @@
 import Browser from "webextension-polyfill";
 import { dispatchEvent, wait } from "../utils";
-
 console.clear();
 
 /**
  * Delete posts & comments
  */
-async function deleteEverything(ammount: number, name: string) {
-  const sure = confirm(` Agree to delete ${ammount} ${name}?`);
+async function deleteEverything({ from, ammount }: TFeatures) {
+  const sure = confirm(`Agree to delete ${ammount} ${from}?`);
   if (!sure) return;
   let counter: number = 0;
   let buttons = document.querySelectorAll("[data-event-action=delete]");
@@ -32,12 +31,19 @@ async function deleteEverything(ammount: number, name: string) {
   }
 }
 
-Browser.runtime.onMessage.addListener(async (request) => {
-  if (request.from === "post") {
-    await deleteEverything(request.ammount, "Posts");
-  } else if (request.from === "comments") {
-    await deleteEverything(request.ammount, "Comments");
-  } else if (request.from === "messages") {
-    await deleteEverything(request.ammount, "Messages");
+Browser.runtime.onMessage.addListener(async (request: TFeatures) => {
+  switch (request.from) {
+    case "POSTS":
+      await deleteEverything({ from: "POSTS", ammount: request.ammount });
+      break;
+    case "COMMENTS":
+      await deleteEverything({ from: "COMMENTS", ammount: request.ammount });
+      break;
+    case "MESSAGES":
+      await deleteEverything({ from: "MESSAGES", ammount: request.ammount });
+      break;
+    // You can add more cases here if needed
+    default:
+      console.log(`Unknown request type: ${request.from}`);
   }
 });

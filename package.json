@@ -1,8 +1,13 @@
 {
   "name": "reddit-assistance",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
+  "author": {
+    "email": "devlopersabbir@gmail.com",
+    "name": "Sabbir Hossain Shuv",
+    "url": "https://github.com/devlopersabbir"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build"

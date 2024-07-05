@@ -19,44 +19,51 @@ export default function () {
   const [version, setVersion] = useState<string>("");
   const [name, setName] = useState<string>("");
 
-  async function deleteHanlder(from: "post" | "comments" | "message") {
-    switch (from) {
-      case "post":
-        if (post >= 1 && post <= 20 && paid && username) {
-          const url = `https://old.reddit.com/user/${username}/submitted`;
+  async function deleteHanlder(params: TFeatures) {
+    console.log("params: ", params);
+    switch (params.from) {
+      case "POSTS":
+        if (params.ammount >= 1 && paid && username) {
+          const url = `https://old.reddit.com/user/${username}/submitted?delete_all=`;
           Browser.runtime.sendMessage({
-            action: "deletePost",
-            ammount: post,
+            action: "deletePosts",
+            ammount: params.ammount,
             url,
-          });
+          } satisfies TMessaging);
         } else {
-          toast.error("Something went wrong! 😒");
-        }
-      case "comments":
-        if (comments >= 1 && comments <= 20 && paid && username) {
-          const url = `https://old.reddit.com/user/${username}/comments/`;
-          Browser.runtime.sendMessage({
-            action: "deleteComment",
-            ammount: comments,
-            url,
+          toast.error("Something went wrong! 😒", {
+            position: "top-center",
           });
-        } else {
-          toast.error("Something went wrong! 😒");
         }
         break;
-      case "message":
-        if (messages >= 1 && messages <= 20 && paid && username) {
-          const url = `https://old.reddit.com/message/messages`;
+      case "COMMENTS":
+        if (params.ammount >= 1 && paid && username) {
+          const url = `https://old.reddit.com/user/${username}/comments?delete_all=`;
           Browser.runtime.sendMessage({
-            action: "deleteMessage",
-            ammount: messages,
+            action: "deleteComments",
+            ammount: params.ammount,
             url,
-          });
+          } satisfies TMessaging);
         } else {
-          toast.error("Something went wrong! 😒");
+          toast.error("Something went wrong! 😒", {
+            position: "top-center",
+          });
+        }
+        break;
+      case "MESSAGES":
+        if (params.ammount >= 1 && paid && username) {
+          const url = `https://old.reddit.com/message/messages/?delete_all`;
+          Browser.runtime.sendMessage({
+            action: "deleteMessages",
+            ammount: params.ammount,
+            url,
+          } satisfies TMessaging);
+        } else {
+          toast.error("Something went wrong! 😒", { position: "top-center" });
         }
         break;
       default:
+        toast.error("Invalid params! 😒", { position: "top-center" });
         break;
     }
   }
@@ -157,15 +164,17 @@ export default function () {
                   type="number"
                   name="post"
                   id="post"
-                  min={1}
-                  max={20}
-                  placeholder="00"
+                  // min={1}
+                  // max={20}
+                  // placeholder="00"
                   value={post}
                   onChange={(e) => setPost(+e.target.value)}
                 />
                 <button
                   className="absolute right-0 top-0 z-10 bg-red-600 h-full rounded-full px-4 text-base font-semibold"
-                  onClick={() => deleteHanlder("post")}
+                  onClick={() =>
+                    deleteHanlder({ from: "POSTS", ammount: post })
+                  }
                 >
                   Delete
                 </button>
@@ -183,15 +192,17 @@ export default function () {
                   type="number"
                   name="comments"
                   id="comments"
-                  min={1}
-                  max={20}
-                  placeholder="00"
+                  // min={1}
+                  // max={20}
+                  // placeholder="00"
                   value={comments}
                   onChange={(e) => setComments(+e.target.value)}
                 />
                 <button
                   className="absolute right-0 top-0 z-10 bg-red-600 h-full rounded-full px-4 text-base font-semibold"
-                  onClick={() => deleteHanlder("comments")}
+                  onClick={() =>
+                    deleteHanlder({ from: "COMMENTS", ammount: comments })
+                  }
                 >
                   Delete
                 </button>
@@ -209,15 +220,17 @@ export default function () {
                   type="number"
                   name="messages"
                   id="messages"
-                  min={1}
-                  max={20}
-                  placeholder="00"
+                  // min={1}
+                  // max={20}
+                  // placeholder="00"
                   value={messages}
                   onChange={(e) => setMessages(+e.target.value)}
                 />
                 <button
                   className="absolute right-0 top-0 z-10 bg-red-600 h-full rounded-full px-4 text-base font-semibold"
-                  onClick={() => deleteHanlder("message")}
+                  onClick={() =>
+                    deleteHanlder({ from: "MESSAGES", ammount: messages })
+                  }
                 >
                   Delete
                 </button>
